@@ -30,7 +30,6 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
-        /* ── BOTÓN ── */
         #btn-download {
             position: fixed;
             bottom: 28px;
@@ -55,35 +54,29 @@
         #btn-download:active { transform: translateY(0); }
         #btn-download svg { width: 16px; height: 16px; flex-shrink: 0; }
         #btn-download.loading { background: #374151; pointer-events: none; }
+
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* ── PRINT ── */
         @media print {
             body { background: white !important; padding: 0 !important; }
             #btn-download { display: none !important; }
             #cv-content { box-shadow: none !important; }
         }
 
-        /* ══════════════════════════════
-           RESPONSIVE
-        ══════════════════════════════ */
-
-        /* ── Tablet (≤ 768px) ── */
+        /* Responsive tablet */
         @media (max-width: 768px) {
             body { padding: 16px 0 80px !important; }
             #btn-download { bottom: 16px; right: 16px; }
-
-            .header-row  { flex-direction: column !important; }
+            .header-row { flex-direction: column !important; }
             .header-left { width: 100% !important; flex-direction: row; display: flex; align-items: flex-start; gap: 16px; }
             .header-right { width: 100% !important; margin-top: 16px; }
             .name-h1 { font-size: 38px !important; margin-bottom: 16px !important; }
-
-            .body-row   { flex-direction: column !important; gap: 0 !important; }
-            .body-left  { width: 100% !important; }
+            .body-row { flex-direction: column !important; gap: 0 !important; }
+            .body-left { width: 100% !important; }
             .body-right { width: 100% !important; }
         }
 
-        /* ── Mobile (≤ 480px) ── */
+        /* Responsive mobile */
         @media (max-width: 480px) {
             #cv-content { padding: 20px !important; }
             .name-h1 { font-size: 28px !important; }
@@ -93,7 +86,6 @@
 </head>
 <body class="bg-gray-200 py-10 font-sans text-gray-800 flex justify-center items-start min-h-screen">
 
-    <!-- Botón flotante -->
     <button id="btn-download" onclick="descargarPDF()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -103,24 +95,20 @@
         Descargar PDF
     </button>
 
-    <!-- ══ CONTENEDOR PRINCIPAL ══ -->
-    <div id="cv-content" class="bg-white w-full max-w-[800px] shadow-2xl" style="padding: 40px;">
+    <div id="cv-content" class="bg-white w-full max-w-[800px] shadow-2xl" style="padding:40px;">
 
         <!-- HEADER -->
         <div class="header-row flex gap-8 mb-6">
 
-            <!-- Izquierda -->
             <div class="header-left" style="width:30%;">
                 <div>
                     <div class="profile-box bg-teal border-b-[5px] border-navy mb-4 overflow-hidden flex items-center justify-center"
                          style="width:120px;height:150px;">
                         <img src="img/perfil.png" alt="Foto de perfil" style="width:100%;height:100%;object-fit:cover;">
                     </div>
-
                     <h2 class="font-display font-bold text-navy text-lg leading-tight mb-3">
                         Ingeniero en<br>Informática
                     </h2>
-
                     <div class="text-[11px] text-gray-500 font-semibold space-y-1.5 leading-snug">
                         <p>luis.fleitas1993@outlook.com</p>
                         <p>0985 103980</p>
@@ -134,10 +122,8 @@
                 </div>
             </div>
 
-            <!-- Derecha -->
             <div class="header-right flex flex-col justify-center" style="width:70%;">
-                <h1 class="name-h1 font-display font-extrabold text-navy leading-[1.05] tracking-tight mb-6"
-                    style="font-size:52px;">
+                <h1 class="name-h1 font-display font-extrabold text-navy leading-[1.05] tracking-tight mb-6" style="font-size:52px;">
                     Luis Alberto<br>Fleitas Rojas
                 </h1>
                 <h2 class="font-display font-bold text-navy text-2xl mb-2">Perfil Profesional</h2>
@@ -152,7 +138,7 @@
         <!-- CUERPO -->
         <div class="body-row flex gap-8">
 
-            <!-- Columna izquierda -->
+            <!-- Izquierda: Experiencia + Educación -->
             <div class="body-left" style="width:55%;">
 
                 <h2 class="font-display font-bold text-navy text-[22px] mb-4">Experiencia Profesional</h2>
@@ -232,7 +218,7 @@
                 </div>
             </div>
 
-            <!-- Columna derecha -->
+            <!-- Derecha: Skills, Cursos, etc. -->
             <div class="body-right" style="width:45%;">
 
                 <div class="bg-lightgray p-5 rounded-2xl mb-6">
@@ -298,10 +284,10 @@
                 </div>
             </div>
         </div>
-    </div><!-- fin #cv-content -->
+    </div>
 
     <script>
-        function descargarPDF() {
+        async function descargarPDF() {
             const btn = document.getElementById('btn-download');
             const el  = document.getElementById('cv-content');
 
@@ -313,19 +299,35 @@
                     <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
                 </svg>Generando...`;
 
-            // ── Guardar estilos originales ──
+            // Guardar estilos originales
             const orig = {
                 padding:   el.style.padding,
                 maxWidth:  el.style.maxWidth,
                 boxShadow: el.style.boxShadow,
-                width:     el.style.width
+                width:     el.style.width,
+                overflow:  el.style.overflow
             };
 
-            // ── Ajustar para captura exacta A4 ──
-            el.style.padding   = '15mm 15mm 15mm 15mm';
+            // Fijar ancho A4 exacto para la captura
+            const PAGE_W_MM = 210;
+            const MARGIN_MM = 12;
+            const PX_PER_MM = 96 / 25.4;  // ~3.7795
+
+            el.style.padding   = MARGIN_MM + 'mm';
             el.style.maxWidth  = 'none';
             el.style.boxShadow = 'none';
-            el.style.width     = '210mm';
+            el.style.width     = PAGE_W_MM + 'mm';
+            el.style.overflow  = 'visible';
+
+            // Esperar a que el browser haga relayout con el nuevo ancho
+            await new Promise(r => setTimeout(r, 150));
+
+            // Medir la altura REAL del contenido ya ajustado al ancho A4
+            const realHeightPx = el.scrollHeight;
+            const realHeightMm = realHeightPx / PX_PER_MM;
+
+            // La hoja será exactamente tan alta como el contenido (mínimo A4)
+            const pageHeightMm = Math.max(297, Math.ceil(realHeightMm) + 5);
 
             const opciones = {
                 margin:   0,
@@ -336,32 +338,35 @@
                     useCORS:         true,
                     logging:         false,
                     backgroundColor: '#ffffff',
-                    windowWidth:     794
+                    windowWidth:     Math.round(PAGE_W_MM * PX_PER_MM),
+                    height:          realHeightPx,
+                    scrollY:         0
                 },
                 jsPDF: {
                     unit:        'mm',
-                    format:      'a4',
+                    format:      [PAGE_W_MM, pageHeightMm],  // hoja a medida del contenido
                     orientation: 'portrait',
                     compress:    true
                 }
             };
 
-            html2pdf().set(opciones).from(el).save().then(() => {
-                // ── Restaurar estilos ──
-                el.style.padding   = orig.padding;
-                el.style.maxWidth  = orig.maxWidth;
-                el.style.boxShadow = orig.boxShadow;
-                el.style.width     = orig.width;
+            await html2pdf().set(opciones).from(el).save();
 
-                btn.classList.remove('loading');
-                btn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>Descargar PDF`;
-            });
+            // Restaurar estilos originales
+            el.style.padding   = orig.padding;
+            el.style.maxWidth  = orig.maxWidth;
+            el.style.boxShadow = orig.boxShadow;
+            el.style.width     = orig.width;
+            el.style.overflow  = orig.overflow;
+
+            btn.classList.remove('loading');
+            btn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>Descargar PDF`;
         }
     </script>
 </body>
