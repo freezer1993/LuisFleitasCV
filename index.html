@@ -27,59 +27,73 @@
         }
     </script>
     <style>
-        @media print {
-            body { background-color: white; margin: 0; padding: 0; }
-            .cv-container { box-shadow: none; margin: 0 auto; max-width: 100%; }
-            .print-break-avoid { page-break-inside: avoid; }
-            #btn-download { display: none !important; }
-        }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
-        /* Botón de descarga */
+        /* ── BOTÓN ── */
         #btn-download {
             position: fixed;
-            bottom: 32px;
-            right: 32px;
+            bottom: 28px;
+            right: 28px;
             z-index: 9999;
             background: #1a2b4c;
             color: white;
             border: none;
-            padding: 14px 26px;
+            padding: 13px 22px;
             border-radius: 50px;
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 9px;
             box-shadow: 0 6px 24px rgba(26,43,76,0.35);
             transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-            letter-spacing: 0.5px;
         }
-        #btn-download:hover {
-            background: #008080;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,128,128,0.35);
+        #btn-download:hover { background: #008080; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,128,128,0.35); }
+        #btn-download:active { transform: translateY(0); }
+        #btn-download svg { width: 16px; height: 16px; flex-shrink: 0; }
+        #btn-download.loading { background: #374151; pointer-events: none; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* ── PRINT ── */
+        @media print {
+            body { background: white !important; padding: 0 !important; }
+            #btn-download { display: none !important; }
+            #cv-content { box-shadow: none !important; }
         }
-        #btn-download:active {
-            transform: translateY(0px);
+
+        /* ══════════════════════════════
+           RESPONSIVE
+        ══════════════════════════════ */
+
+        /* ── Tablet (≤ 768px) ── */
+        @media (max-width: 768px) {
+            body { padding: 16px 0 80px !important; }
+            #btn-download { bottom: 16px; right: 16px; }
+
+            .header-row  { flex-direction: column !important; }
+            .header-left { width: 100% !important; flex-direction: row; display: flex; align-items: flex-start; gap: 16px; }
+            .header-right { width: 100% !important; margin-top: 16px; }
+            .name-h1 { font-size: 38px !important; margin-bottom: 16px !important; }
+
+            .body-row   { flex-direction: column !important; gap: 0 !important; }
+            .body-left  { width: 100% !important; }
+            .body-right { width: 100% !important; }
         }
-        #btn-download svg {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-        }
-        #btn-download.loading {
-            background: #374151;
-            pointer-events: none;
+
+        /* ── Mobile (≤ 480px) ── */
+        @media (max-width: 480px) {
+            #cv-content { padding: 20px !important; }
+            .name-h1 { font-size: 28px !important; }
+            .profile-box { width: 80px !important; height: 100px !important; }
         }
     </style>
 </head>
-<body class="bg-gray-200 py-10 print:py-0 font-sans text-gray-800 flex justify-center">
+<body class="bg-gray-200 py-10 font-sans text-gray-800 flex justify-center items-start min-h-screen">
 
-    <!-- Botón flotante de descarga PDF -->
+    <!-- Botón flotante -->
     <button id="btn-download" onclick="descargarPDF()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -89,38 +103,43 @@
         Descargar PDF
     </button>
 
-    <!-- Contenedor Principal tamaño A4 -->
-    <div id="cv-content" class="cv-container bg-white w-full max-w-[800px] shadow-2xl overflow-hidden p-10 print:p-0">
-        
-        <!-- SECCIÓN SUPERIOR (HEADER) -->
-        <div class="flex gap-8 mb-6">
-            
-            <!-- Columna Izquierda Header -->
-            <div class="w-[30%]">
-                <div class="w-[120px] h-[150px] bg-teal flex items-center justify-center text-white text-xs text-center border-b-[5px] border-navy mb-4 relative overflow-hidden group cursor-pointer">
-                 <img src="img/perfil.png" >    
-                </div>
+    <!-- ══ CONTENEDOR PRINCIPAL ══ -->
+    <div id="cv-content" class="bg-white w-full max-w-[800px] shadow-2xl" style="padding: 40px;">
 
-                <h2 class="font-display font-bold text-navy text-lg leading-tight mb-3">
-                    Ingeniero en<br>Informática
-                </h2>
+        <!-- HEADER -->
+        <div class="header-row flex gap-8 mb-6">
 
-                <div class="text-[11px] text-gray-500 font-semibold space-y-1.5 leading-snug">
-                    <p>luis.fleitas1993@outlook.com</p>
-                    <p>0985 103980</p>
-                    <p>Fernando de la Mora,<br>Paraguay</p>
-                    <p>Nacimiento: 09/05/1993</p>
-                    <p>Nacionalidad: Paraguaya</p>
-                    <p class="pt-2">LinkedIn:<br> <img src="img/linkedin.png" alt="LinkedIn logo, opens professional profile in new tab" class="inline-block w-12 h-12 ml-1"></p>
+            <!-- Izquierda -->
+            <div class="header-left" style="width:30%;">
+                <div>
+                    <div class="profile-box bg-teal border-b-[5px] border-navy mb-4 overflow-hidden flex items-center justify-center"
+                         style="width:120px;height:150px;">
+                        <img src="img/perfil.png" alt="Foto de perfil" style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+
+                    <h2 class="font-display font-bold text-navy text-lg leading-tight mb-3">
+                        Ingeniero en<br>Informática
+                    </h2>
+
+                    <div class="text-[11px] text-gray-500 font-semibold space-y-1.5 leading-snug">
+                        <p>luis.fleitas1993@outlook.com</p>
+                        <p>0985 103980</p>
+                        <p>Fernando de la Mora,<br>Paraguay</p>
+                        <p>Nacimiento: 09/05/1993</p>
+                        <p>Nacionalidad: Paraguaya</p>
+                        <p class="pt-2">LinkedIn:<br>
+                            <img src="img/linkedin.png" alt="LinkedIn" class="inline-block mt-1" style="width:48px;height:48px;">
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Columna Derecha Header -->
-            <div class="w-[70%] flex flex-col justify-center">
-                <h1 class="font-display font-extrabold text-navy text-[52px] leading-[1.05] tracking-tight mb-6">
+            <!-- Derecha -->
+            <div class="header-right flex flex-col justify-center" style="width:70%;">
+                <h1 class="name-h1 font-display font-extrabold text-navy leading-[1.05] tracking-tight mb-6"
+                    style="font-size:52px;">
                     Luis Alberto<br>Fleitas Rojas
                 </h1>
-
                 <h2 class="font-display font-bold text-navy text-2xl mb-2">Perfil Profesional</h2>
                 <div class="bg-lightgray p-5 rounded-2xl text-[13px] text-gray-600 leading-relaxed text-justify">
                     Ingeniero en Informática con más de 8 años de experiencia en desarrollo de software, análisis de sistemas y soporte TI, especializado en soluciones para el sector financiero. Experiencia en desarrollo backend para home banking, integración de APIs REST, manejo de core bancario y programación en entornos Java, Node.js y Oracle. Perfil orientado a resultados, mejora continua y optimización de procesos críticos.
@@ -130,15 +149,15 @@
 
         <div class="h-4"></div>
 
-        <!-- SECCIÓN CUERPO PRINCIPAL -->
-        <div class="flex gap-8">
-            
-            <!-- Columna Izquierda Principal (Experiencia y Educación) -->
-            <div class="w-[55%]">
-                
+        <!-- CUERPO -->
+        <div class="body-row flex gap-8">
+
+            <!-- Columna izquierda -->
+            <div class="body-left" style="width:55%;">
+
                 <h2 class="font-display font-bold text-navy text-[22px] mb-4">Experiencia Profesional</h2>
 
-                <div class="print-break-avoid mb-5">
+                <div class="mb-5">
                     <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
                         Bancop S.A. — Analista de Canales
                     </div>
@@ -146,7 +165,7 @@
                     <ul class="list-disc list-outside ml-4 text-[12px] text-gray-600 space-y-1">
                         <li>Desarrollo backend de Home Banking.</li>
                         <li>Implementación de servicios en Node.js.</li>
-                        <li>Desarrollo en Oracle Forms & Reports.</li>
+                        <li>Desarrollo en Oracle Forms &amp; Reports.</li>
                         <li>Integración y consumo de APIs REST.</li>
                         <li>Manejo de Core Bancario ITGF.</li>
                         <li>Desarrollo con Spring Boot + Maven.</li>
@@ -155,7 +174,7 @@
                     </ul>
                 </div>
 
-                <div class="print-break-avoid mb-5">
+                <div class="mb-5">
                     <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
                         Grupo Guide S.A. — Analista de Sistemas
                     </div>
@@ -168,7 +187,7 @@
                     </ul>
                 </div>
 
-                <div class="print-break-avoid mb-5">
+                <div class="mb-5">
                     <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
                         Bancop S.A. — Analista de Canales
                     </div>
@@ -181,7 +200,7 @@
                     </ul>
                 </div>
 
-                <div class="print-break-avoid mb-5">
+                <div class="mb-5">
                     <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
                         Transporte P. López / Cotrisa — Encargado TI
                     </div>
@@ -193,7 +212,7 @@
                     </ul>
                 </div>
 
-                <div class="print-break-avoid mb-5">
+                <div class="mb-5">
                     <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
                         Sanatorio Británico — Desarrollador Web
                     </div>
@@ -205,74 +224,60 @@
                 </div>
 
                 <h2 class="font-display font-bold text-navy text-[22px] mb-4 mt-8">Educación</h2>
-
-                <div class="print-break-avoid mb-5">
+                <div class="mb-5">
                     <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
                         Ingeniería en Informática, U. de San Lorenzo
                     </div>
                     <div class="text-[12px] text-gray-500 italic">Finalización: 2025</div>
                 </div>
-
             </div>
 
-            <!-- Columna Derecha Principal (Skills, Cursos, etc.) -->
-            <div class="w-[45%]">
-                
-                <div class="bg-lightgray p-5 rounded-2xl mb-6 print-break-avoid">
+            <!-- Columna derecha -->
+            <div class="body-right" style="width:45%;">
+
+                <div class="bg-lightgray p-5 rounded-2xl mb-6">
                     <h3 class="font-display font-bold text-navy text-xl mb-4">Competencias</h3>
-                    
                     <div class="space-y-2.5">
                         <div class="flex items-center text-[11px] font-bold text-navy">
                             <span class="whitespace-nowrap">Java, Spring Boot, Node.js</span>
                             <div class="flex-grow border-b border-dotted border-gray-400 mx-2"></div>
-                            <span class="text-gray-500">Avanzado</span>
+                            <span class="text-gray-500 whitespace-nowrap">Avanzado</span>
                         </div>
                         <div class="flex items-center text-[11px] font-bold text-navy">
                             <span class="whitespace-nowrap">Oracle, PL/SQL, Postgresql</span>
                             <div class="flex-grow border-b border-dotted border-gray-400 mx-2"></div>
-                            <span class="text-gray-500">Avanzado</span>
+                            <span class="text-gray-500 whitespace-nowrap">Avanzado</span>
                         </div>
                         <div class="flex items-center text-[11px] font-bold text-navy">
                             <span class="whitespace-nowrap">Angular, JSP, JavaScript</span>
                             <div class="flex-grow border-b border-dotted border-gray-400 mx-2"></div>
-                            <span class="text-gray-500">Intermedio</span>
+                            <span class="text-gray-500 whitespace-nowrap">Intermedio</span>
                         </div>
                         <div class="flex items-center text-[11px] font-bold text-navy">
                             <span class="whitespace-nowrap">Maven, Git, APIs REST</span>
                             <div class="flex-grow border-b border-dotted border-gray-400 mx-2"></div>
-                            <span class="text-gray-500">Sólido</span>
+                            <span class="text-gray-500 whitespace-nowrap">Sólido</span>
                         </div>
-                        <div class="flex items-center text-[11px] font-bold text-navy mt-4">
+                        <div class="flex items-center text-[11px] font-bold text-navy mt-3">
                             <span class="whitespace-nowrap text-teal">Sistemas Bancarios Core</span>
                             <div class="flex-grow border-b border-dotted border-gray-400 mx-2"></div>
-                            <span class="text-gray-500">Especialista</span>
+                            <span class="text-gray-500 whitespace-nowrap">Especialista</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-lightgray p-5 rounded-2xl mb-6 print-break-avoid">
+                <div class="bg-lightgray p-5 rounded-2xl mb-6">
                     <h3 class="font-display font-bold text-navy text-xl mb-3">Cursos</h3>
-                    
                     <div class="text-[12px] text-navy font-bold space-y-3">
-                        <div>
-                            Curso Soy Bancario <span class="text-gray-500 font-normal italic text-[11px] block">Finalizado (Finanzas)</span>
-                        </div>
-                        <div>
-                            Full Stack Java + Angular <span class="text-gray-500 font-normal italic text-[11px] block">Udemy</span>
-                        </div>
-                        <div>
-                            Java Avanzado <span class="text-gray-500 font-normal italic text-[11px] block">CEPEU</span>
-                        </div>
-                        <div>
-                            Vue + Firebase <span class="text-gray-500 font-normal italic text-[11px] block">Udemy</span>
-                        </div>
-                        <div>
-                            Flutter <span class="text-gray-500 font-normal italic text-[11px] block">En curso</span>
-                        </div>
+                        <div>Curso Soy Bancario <span class="text-gray-500 font-normal italic text-[11px] block">Finalizado (Finanzas)</span></div>
+                        <div>Full Stack Java + Angular <span class="text-gray-500 font-normal italic text-[11px] block">Udemy</span></div>
+                        <div>Java Avanzado <span class="text-gray-500 font-normal italic text-[11px] block">CEPEU</span></div>
+                        <div>Vue + Firebase <span class="text-gray-500 font-normal italic text-[11px] block">Udemy</span></div>
+                        <div>Flutter <span class="text-gray-500 font-normal italic text-[11px] block">En curso</span></div>
                     </div>
                 </div>
 
-                <div class="bg-lightgray p-5 rounded-2xl mb-6 print-break-avoid">
+                <div class="bg-lightgray p-5 rounded-2xl mb-6">
                     <h3 class="font-display font-bold text-navy text-xl mb-3">Idiomas</h3>
                     <div class="text-[12px] text-navy font-bold">
                         Inglés <span class="text-gray-600 font-normal text-[11px] block">CCPA (PS2 – Upper Beginner 2)</span>
@@ -282,7 +287,7 @@
                     </div>
                 </div>
 
-                <div class="bg-lightgray p-5 rounded-2xl mb-6 print-break-avoid">
+                <div class="bg-lightgray p-5 rounded-2xl mb-6">
                     <h3 class="font-display font-bold text-navy text-xl mb-3">Seminarios</h3>
                     <ul class="list-disc list-outside ml-4 text-[12px] text-navy font-medium space-y-1.5">
                         <li>Convención Bancaria Paraguay 2025.</li>
@@ -291,62 +296,73 @@
                         <li>Diseño de páginas web.</li>
                     </ul>
                 </div>
-
             </div>
         </div>
-
-    </div>
+    </div><!-- fin #cv-content -->
 
     <script>
         function descargarPDF() {
             const btn = document.getElementById('btn-download');
+            const el  = document.getElementById('cv-content');
+
             btn.classList.add('loading');
             btn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                     style="animation:spin 1s linear infinite">
                     <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
-                </svg>
-                Generando...
-            `;
+                </svg>Generando...`;
 
-            const elemento = document.getElementById('cv-content');
+            // ── Guardar estilos originales ──
+            const orig = {
+                padding:   el.style.padding,
+                maxWidth:  el.style.maxWidth,
+                boxShadow: el.style.boxShadow,
+                width:     el.style.width
+            };
+
+            // ── Ajustar para captura exacta A4 ──
+            el.style.padding   = '15mm 15mm 15mm 15mm';
+            el.style.maxWidth  = 'none';
+            el.style.boxShadow = 'none';
+            el.style.width     = '210mm';
 
             const opciones = {
-                margin: 0,
+                margin:   0,
                 filename: 'CV_Luis_Fleitas.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
+                image:    { type: 'jpeg', quality: 0.98 },
                 html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false,
-                    backgroundColor: '#ffffff'
+                    scale:           2,
+                    useCORS:         true,
+                    logging:         false,
+                    backgroundColor: '#ffffff',
+                    windowWidth:     794
                 },
                 jsPDF: {
-                    unit: 'mm',
-                    format: 'a4',
-                    orientation: 'portrait'
+                    unit:        'mm',
+                    format:      'a4',
+                    orientation: 'portrait',
+                    compress:    true
                 }
             };
 
-            html2pdf().set(opciones).from(elemento).save().then(() => {
+            html2pdf().set(opciones).from(el).save().then(() => {
+                // ── Restaurar estilos ──
+                el.style.padding   = orig.padding;
+                el.style.maxWidth  = orig.maxWidth;
+                el.style.boxShadow = orig.boxShadow;
+                el.style.width     = orig.width;
+
                 btn.classList.remove('loading');
                 btn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                         <polyline points="7 10 12 15 17 10"/>
                         <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    Descargar PDF
-                `;
+                    </svg>Descargar PDF`;
             });
         }
     </script>
-
-    <style>
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-    </style>
-
 </body>
 </html>
