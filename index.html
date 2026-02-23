@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - Luis Alberto Fleitas Rojas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Open Sans', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: '#1a2b4c',
+                        lightgray: '#f0f2f5',
+                        teal: '#008080'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            body { background-color: white; margin: 0; padding: 0; }
+            .cv-container { box-shadow: none; margin: 0 auto; max-width: 100%; }
+            .print-break-avoid { page-break-inside: avoid; }
+            #btn-download { display: none !important; }
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+        /* Botón de descarga */
+        #btn-download {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 9999;
+            background: #1a2b4c;
+            color: white;
+            border: none;
+            padding: 14px 26px;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 6px 24px rgba(26,43,76,0.35);
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            letter-spacing: 0.5px;
+        }
+        #btn-download:hover {
+            background: #008080;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,128,128,0.35);
+        }
+        #btn-download:active {
+            transform: translateY(0px);
+        }
+        #btn-download svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+        #btn-download.loading {
+            background: #374151;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-200 py-10 print:py-0 font-sans text-gray-800 flex justify-center">
+
+    <!-- Botón flotante de descarga PDF -->
+    <button id="btn-download" onclick="descargarPDF()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Descargar PDF
+    </button>
+
+    <!-- Contenedor Principal tamaño A4 -->
+    <div id="cv-content" class="cv-container bg-white w-full max-w-[800px] shadow-2xl overflow-hidden p-10 print:p-0">
+        
+        <!-- SECCIÓN SUPERIOR (HEADER) -->
+        <div class="flex gap-8 mb-6">
+            
+            <!-- Columna Izquierda Header -->
+            <div class="w-[30%]">
+                <div class="w-[120px] h-[150px] bg-teal flex items-center justify-center text-white text-xs text-center border-b-[5px] border-navy mb-4 relative overflow-hidden group cursor-pointer">
+                 <img src="img/perfil.png" >    
+                </div>
+
+                <h2 class="font-display font-bold text-navy text-lg leading-tight mb-3">
+                    Ingeniero en<br>Informática
+                </h2>
+
+                <div class="text-[11px] text-gray-500 font-semibold space-y-1.5 leading-snug">
+                    <p>luis.fleitas1993@outlook.com</p>
+                    <p>0985 103980</p>
+                    <p>Fernando de la Mora,<br>Paraguay</p>
+                    <p>Nacimiento: 09/05/1993</p>
+                    <p>Nacionalidad: Paraguaya</p>
+                    <p class="pt-2">LinkedIn:<br> <img src="img/linkedin.png" alt="LinkedIn logo, opens professional profile in new tab" class="inline-block w-12 h-12 ml-1"></p>
+                </div>
+            </div>
+
+            <!-- Columna Derecha Header -->
+            <div class="w-[70%] flex flex-col justify-center">
+                <h1 class="font-display font-extrabold text-navy text-[52px] leading-[1.05] tracking-tight mb-6">
+                    Luis Alberto<br>Fleitas Rojas
+                </h1>
+
+                <h2 class="font-display font-bold text-navy text-2xl mb-2">Perfil Profesional</h2>
+                <div class="bg-lightgray p-5 rounded-2xl text-[13px] text-gray-600 leading-relaxed text-justify">
+                    Ingeniero en Informática con más de 8 años de experiencia en desarrollo de software, análisis de sistemas y soporte TI, especializado en soluciones para el sector financiero. Experiencia en desarrollo backend para home banking, integración de APIs REST, manejo de core bancario y programación en entornos Java, Node.js y Oracle. Perfil orientado a resultados, mejora continua y optimización de procesos críticos.
+                </div>
+            </div>
+        </div>
+
+        <div class="h-4"></div>
+
+        <!-- SECCIÓN CUERPO PRINCIPAL -->
+        <div class="flex gap-8">
+            
+            <!-- Columna Izquierda Principal (Experiencia y Educación) -->
+            <div class="w-[55%]">
+                
+                <h2 class="font-display font-bold text-navy text-[22px] mb-4">Experiencia Profesional</h2>
+
+                <div class="print-break-avoid mb-5">
+                    <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
+                        Bancop S.A. — Analista de Canales
+                    </div>
+                    <div class="text-[12px] text-gray-500 italic mb-2">Feb 2022 – Actualidad</div>
+                    <ul class="list-disc list-outside ml-4 text-[12px] text-gray-600 space-y-1">
+                        <li>Desarrollo backend de Home Banking.</li>
+                        <li>Implementación de servicios en Node.js.</li>
+                        <li>Desarrollo en Oracle Forms & Reports.</li>
+                        <li>Integración y consumo de APIs REST.</li>
+                        <li>Manejo de Core Bancario ITGF.</li>
+                        <li>Desarrollo con Spring Boot + Maven.</li>
+                        <li>Programación PL/SQL (procedimientos, triggers, funciones).</li>
+                        <li>Análisis funcional y acompañamiento frontend.</li>
+                    </ul>
+                </div>
+
+                <div class="print-break-avoid mb-5">
+                    <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
+                        Grupo Guide S.A. — Analista de Sistemas
+                    </div>
+                    <div class="text-[12px] text-gray-500 italic mb-2">2021 – 2022</div>
+                    <ul class="list-disc list-outside ml-4 text-[12px] text-gray-600 space-y-1">
+                        <li>Desarrollo en Oracle Forms 6i y Reports.</li>
+                        <li>Integración de APIs REST.</li>
+                        <li>Desarrollo Java Spring Boot.</li>
+                        <li>Programación PL/SQL avanzada.</li>
+                    </ul>
+                </div>
+
+                <div class="print-break-avoid mb-5">
+                    <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
+                        Bancop S.A. — Analista de Canales
+                    </div>
+                    <div class="text-[12px] text-gray-500 italic mb-2">2020 – 2021</div>
+                    <ul class="list-disc list-outside ml-4 text-[12px] text-gray-600 space-y-1">
+                        <li>Backend de Home Banking.</li>
+                        <li>Integración con Xadapter (comunicación BCP–Banco).</li>
+                        <li>Manejo Core Bancario ITGF.</li>
+                        <li>Desarrollo Java + Maven y APIs REST.</li>
+                    </ul>
+                </div>
+
+                <div class="print-break-avoid mb-5">
+                    <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
+                        Transporte P. López / Cotrisa — Encargado TI
+                    </div>
+                    <div class="text-[12px] text-gray-500 italic mb-2">2019 – 2020</div>
+                    <ul class="list-disc list-outside ml-4 text-[12px] text-gray-600 space-y-1">
+                        <li>Desarrollo sistema web Java + JSP + Oracle.</li>
+                        <li>Integración API de billetaje electrónico.</li>
+                        <li>Administración de servidores e infraestructura.</li>
+                    </ul>
+                </div>
+
+                <div class="print-break-avoid mb-5">
+                    <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
+                        Sanatorio Británico — Desarrollador Web
+                    </div>
+                    <div class="text-[12px] text-gray-500 italic mb-2">2017 – 2019</div>
+                    <ul class="list-disc list-outside ml-4 text-[12px] text-gray-600 space-y-1">
+                        <li>Desarrollo web con JSP, JS, AJAX, jQuery.</li>
+                        <li>Gestión BD Oracle PL/SQL y reportes JasperReports.</li>
+                    </ul>
+                </div>
+
+                <h2 class="font-display font-bold text-navy text-[22px] mb-4 mt-8">Educación</h2>
+
+                <div class="print-break-avoid mb-5">
+                    <div class="bg-navy text-white px-2.5 py-1 inline-block text-[13px] font-bold font-display leading-none mb-1">
+                        Ingeniería en Informática, U. de San Lorenzo
+                    </div>
+                    <div class="text-[12px] text-gray-500 italic">Finalización: 2025</div>
+                </div>
+
+            </div>
+
+            <!-- Columna Derecha Principal (Skills, Cursos, etc.) -->
+            <div class="w-[45%]">
+                
+                <div class="bg-lightgray p-5 rounded-2xl mb-6 print-break-avoid">
+                    <h3 class="font-display font-bold text-navy text-xl mb-4">Competencias</h3>
+                    
+                    <div class="space-y-2.5">
+                        <div class="flex items-center text-[11px] font-bold text-navy">
+                            <span class="whitespace-nowrap">Java, Spring Boot, Node.js</span>
+                            <div class="flex-grow border-b border-dotted border-gray-400 mx-2"></div>
+                            <span class="text-gray-500">Avanzado</span>
+                        </div>
+                        <div class="flex items-center text-[11px] font-bold text-navy">
+                            <span class="whitespace-nowrap">Oracle, PL/SQL, Postgresql</span>
+                            <div class="flex-grow border-b border-dotted border-gray-400 mx-2"></div>
+                            <span class="text-gray-500">Avanzado</span>
+                        </div>
+                        <div class="flex items-center text-[11px] font-bold text-navy">
+                            <span class="whitespace-nowrap">Angular, JSP, JavaScript</span>
+                            <div class="flex-grow border-b border-dotted border-gray-400 mx-2"></div>
+                            <span class="text-gray-500">Intermedio</span>
+                        </div>
+                        <div class="flex items-center text-[11px] font-bold text-navy">
+                            <span class="whitespace-nowrap">Maven, Git, APIs REST</span>
+                            <div class="flex-grow border-b border-dotted border-gray-400 mx-2"></div>
+                            <span class="text-gray-500">Sólido</span>
+                        </div>
+                        <div class="flex items-center text-[11px] font-bold text-navy mt-4">
+                            <span class="whitespace-nowrap text-teal">Sistemas Bancarios Core</span>
+                            <div class="flex-grow border-b border-dotted border-gray-400 mx-2"></div>
+                            <span class="text-gray-500">Especialista</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-lightgray p-5 rounded-2xl mb-6 print-break-avoid">
+                    <h3 class="font-display font-bold text-navy text-xl mb-3">Cursos</h3>
+                    
+                    <div class="text-[12px] text-navy font-bold space-y-3">
+                        <div>
+                            Curso Soy Bancario <span class="text-gray-500 font-normal italic text-[11px] block">Finalizado (Finanzas)</span>
+                        </div>
+                        <div>
+                            Full Stack Java + Angular <span class="text-gray-500 font-normal italic text-[11px] block">Udemy</span>
+                        </div>
+                        <div>
+                            Java Avanzado <span class="text-gray-500 font-normal italic text-[11px] block">CEPEU</span>
+                        </div>
+                        <div>
+                            Vue + Firebase <span class="text-gray-500 font-normal italic text-[11px] block">Udemy</span>
+                        </div>
+                        <div>
+                            Flutter <span class="text-gray-500 font-normal italic text-[11px] block">En curso</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-lightgray p-5 rounded-2xl mb-6 print-break-avoid">
+                    <h3 class="font-display font-bold text-navy text-xl mb-3">Idiomas</h3>
+                    <div class="text-[12px] text-navy font-bold">
+                        Inglés <span class="text-gray-600 font-normal text-[11px] block">CCPA (PS2 – Upper Beginner 2)</span>
+                    </div>
+                    <div class="text-[12px] text-navy font-bold mt-2">
+                        Español <span class="text-gray-600 font-normal text-[11px] block">Nativo</span>
+                    </div>
+                </div>
+
+                <div class="bg-lightgray p-5 rounded-2xl mb-6 print-break-avoid">
+                    <h3 class="font-display font-bold text-navy text-xl mb-3">Seminarios</h3>
+                    <ul class="list-disc list-outside ml-4 text-[12px] text-navy font-medium space-y-1.5">
+                        <li>Convención Bancaria Paraguay 2025.</li>
+                        <li>Problemáticas de desarrollo e implementación de software.</li>
+                        <li>Virtualización como alternativa de desarrollo.</li>
+                        <li>Diseño de páginas web.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function descargarPDF() {
+            const btn = document.getElementById('btn-download');
+            btn.classList.add('loading');
+            btn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite">
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                </svg>
+                Generando...
+            `;
+
+            const elemento = document.getElementById('cv-content');
+
+            const opciones = {
+                margin: 0,
+                filename: 'CV_Luis_Fleitas.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
+            };
+
+            html2pdf().set(opciones).from(elemento).save().then(() => {
+                btn.classList.remove('loading');
+                btn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Descargar PDF
+                `;
+            });
+        }
+    </script>
+
+    <style>
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+
+</body>
+</html>
