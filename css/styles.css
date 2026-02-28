@@ -1,0 +1,243 @@
+/* ============================================================
+   CV - Luis Alberto Fleitas Rojas
+   styles.css
+   ============================================================ */
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+
+/* ============================================================
+   ANIMACIONES DE ENTRADA
+   ============================================================ */
+
+/* Base: fade + slide-up */
+.anim-block {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.6s cubic-bezier(.4,0,.2,1),
+                transform 0.6s cubic-bezier(.4,0,.2,1);
+}
+.anim-block.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Slide desde la derecha */
+.anim-right {
+    opacity: 0;
+    transform: translateX(32px);
+    transition: opacity 0.6s cubic-bezier(.4,0,.2,1),
+                transform 0.6s cubic-bezier(.4,0,.2,1);
+}
+.anim-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Slide desde la izquierda */
+.anim-left {
+    opacity: 0;
+    transform: translateX(-32px);
+    transition: opacity 0.6s cubic-bezier(.4,0,.2,1),
+                transform 0.6s cubic-bezier(.4,0,.2,1);
+}
+.anim-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Header: escala + fade */
+.anim-hero {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.97);
+    transition: opacity 0.75s cubic-bezier(.4,0,.2,1),
+                transform 0.75s cubic-bezier(.4,0,.2,1);
+}
+.anim-hero.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Foto: zoom suave con rebote */
+.anim-photo {
+    opacity: 0;
+    transform: scale(0.88);
+    transition: opacity 0.7s cubic-bezier(.4,0,.2,1),
+                transform 0.7s cubic-bezier(.34,1.56,.64,1);
+}
+.anim-photo.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Línea decorativa que crece horizontalmente */
+.anim-line {
+    width: 0;
+    height: 3px;
+    background: #008080;
+    transition: width 0.7s cubic-bezier(.4,0,.2,1);
+    border-radius: 2px;
+    margin-bottom: 6px;
+}
+.anim-line.visible { width: 48px; }
+
+
+/* ── Delays escalonados ────────────────────────────────────── */
+.delay-0 { transition-delay: 0ms; }
+.delay-1 { transition-delay: 80ms; }
+.delay-2 { transition-delay: 160ms; }
+.delay-3 { transition-delay: 240ms; }
+.delay-4 { transition-delay: 320ms; }
+.delay-5 { transition-delay: 400ms; }
+.delay-6 { transition-delay: 480ms; }
+.delay-7 { transition-delay: 560ms; }
+
+
+/* ── Keyframe spin (botón PDF cargando) ────────────────────── */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+
+/* ============================================================
+   BOTONES FIJOS
+   ============================================================ */
+
+/* Descargar PDF */
+#btn-download {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9999;
+    background: #1a2b4c;
+    color: white;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    box-shadow: 0 6px 24px rgba(26,43,76,0.35);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+#btn-download:hover  { background: #008080; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,128,128,0.35); }
+#btn-download:active { transform: translateY(0); }
+#btn-download svg    { width: 16px; height: 16px; flex-shrink: 0; }
+#btn-download.loading { background: #374151; pointer-events: none; }
+
+/* LinkedIn */
+#btn-linkedin {
+    position: fixed;
+    bottom: 84px;
+    right: 28px;
+    z-index: 9999;
+    background: #0077b5;
+    color: white;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    box-shadow: 0 6px 24px rgba(0,119,181,0.35);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    text-decoration: none;
+}
+#btn-linkedin:hover  { background: #005e93; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,119,181,0.4); }
+#btn-linkedin:active { transform: translateY(0); }
+#btn-linkedin svg    { width: 16px; height: 16px; flex-shrink: 0; }
+
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print {
+    body { background: white !important; padding: 0 !important; }
+    #btn-download, #btn-linkedin { display: none !important; }
+    #cv-content { box-shadow: none !important; }
+
+    /* Forzar visibilidad de todos los elementos animados */
+    .anim-block,
+    .anim-right,
+    .anim-left,
+    .anim-hero,
+    .anim-photo {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .anim-line { width: 48px !important; }
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET  (≤ 768px)
+   ============================================================ */
+@media (max-width: 768px) {
+    body { padding: 16px 0 110px !important; }
+    #btn-download { bottom: 16px; right: 16px; }
+    #btn-linkedin { bottom: 72px; right: 16px; }
+
+    /* Header apilado */
+    .header-row  { flex-direction: column !important; }
+    .header-left { width: 100% !important; }
+
+    /* Foto 55% + datos 45% en la misma fila */
+    .header-left-inner {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+        width: 100% !important;
+    }
+    .header-left-inner .profile-box {
+        flex: 0 0 55% !important;
+        width: 55% !important;
+        height: auto !important;
+        aspect-ratio: 3/4 !important;
+        max-width: none !important;
+    }
+    .header-left-inner .profile-box img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+    .header-left-inner .contact-data {
+        flex: 0 0 calc(45% - 16px) !important;
+        width: calc(45% - 16px) !important;
+    }
+
+    .header-right { width: 100% !important; margin-top: 20px; }
+    .name-h1 { font-size: 36px !important; margin-bottom: 14px !important; }
+
+    /* Cuerpo apilado */
+    .body-row   { flex-direction: column !important; gap: 0 !important; }
+    .body-left  { width: 100% !important; }
+    .body-right { width: 100% !important; }
+
+    /* En mobile, anim-right/left se comportan como anim-block */
+    .anim-right,
+    .anim-left  { transform: translateY(28px) !important; }
+
+    .anim-right.visible,
+    .anim-left.visible  { transform: translateY(0) !important; }
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE  (≤ 480px)
+   ============================================================ */
+@media (max-width: 480px) {
+    #cv-content { padding: 20px !important; }
+    .name-h1    { font-size: 26px !important; }
+}
