@@ -44,8 +44,9 @@ animTargets.forEach(el => scrollObserver.observe(el));
    ============================================================ */
 
 async function descargarPDF() {
-    const btn = document.getElementById('btn-download');
-    const el  = document.getElementById('cv-content');
+    const btn   = document.getElementById('btn-download');
+    const el    = document.getElementById('cv-content');
+    const inner = document.querySelector('.cv-inner-padding');
 
     // Estado de carga en el botón
     btn.classList.add('loading');
@@ -54,19 +55,20 @@ async function descargarPDF() {
              stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
              style="animation:spin 1s linear infinite">
             <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
-        </svg>Generando...`;
+        </svg><span>Generando...</span>`;
 
     // Forzar visibilidad de todos los elementos animados
     document.querySelectorAll(ANIM_SELECTORS.join(',')).forEach(e => e.classList.add('visible'));
-    document.querySelectorAll('.anim-line').forEach(e => e.style.width = '48px');
+    document.querySelectorAll('.anim-line').forEach(e => e.style.width = '52px');
 
     // Guardar estilos originales del contenedor
     const orig = {
-        padding:   el.style.padding,
-        maxWidth:  el.style.maxWidth,
-        boxShadow: el.style.boxShadow,
-        width:     el.style.width,
-        overflow:  el.style.overflow
+        padding:      el.style.padding,
+        innerPadding: inner ? inner.style.padding : '',
+        maxWidth:     el.style.maxWidth,
+        boxShadow:    el.style.boxShadow,
+        width:        el.style.width,
+        overflow:     el.style.overflow
     };
 
     // Constantes A4
@@ -75,7 +77,8 @@ async function descargarPDF() {
     const PX_PER_MM = 96 / 25.4; // ≈ 3.7795
 
     // Ajustar al ancho A4 exacto para captura
-    el.style.padding   = MARGIN_MM + 'mm';
+    el.style.padding   = '0';
+    if (inner) inner.style.padding = MARGIN_MM + 'mm';
     el.style.maxWidth  = 'none';
     el.style.boxShadow = 'none';
     el.style.width     = PAGE_W_MM + 'mm';
@@ -110,22 +113,25 @@ async function descargarPDF() {
         }
     };
 
-    await html2pdf().set(pdfOptions).from(el).save();
+    try {
+        await html2pdf().set(pdfOptions).from(el).save();
+    } finally {
+        // Restaurar estilos originales
+        el.style.padding   = orig.padding;
+        if (inner) inner.style.padding = orig.innerPadding;
+        el.style.maxWidth  = orig.maxWidth;
+        el.style.boxShadow = orig.boxShadow;
+        el.style.width     = orig.width;
+        el.style.overflow  = orig.overflow;
 
-    // Restaurar estilos originales
-    el.style.padding   = orig.padding;
-    el.style.maxWidth  = orig.maxWidth;
-    el.style.boxShadow = orig.boxShadow;
-    el.style.width     = orig.width;
-    el.style.overflow  = orig.overflow;
-
-    // Restaurar botón
-    btn.classList.remove('loading');
-    btn.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>Descargar PDF`;
+        // Restaurar botón
+        btn.classList.remove('loading');
+        btn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg><span>Descargar PDF</span>`;
+    }
 }
