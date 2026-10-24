@@ -24,7 +24,78 @@ aplicarAssetsBase64();
 
 
 /* ============================================================
-   1. INTERSECTION OBSERVER — Animaciones al hacer scroll
+   1. RASTERIZACIÓN DE ÍCONOS SVG A PNG EN MEMORIA PARA PDF
+   html2canvas (incluido en html2pdf 0.10.1) tiene un bug conocido
+   donde recorta la mitad derecha/inferior de los elementos <svg>
+   con viewBox="0 0 24 24" y clases de tamaño pequeño (14px-20px).
+   Esta función convierte cada <svg> dentro de #cv-content en un
+   <img> PNG de alta resolución (4x) antes de capturar y los
+   restaura al terminar.
+   ============================================================ */
+async function convertirSVGsAPngParaPDF(contenedor) {
+    const svgs = Array.from(contenedor.querySelectorAll('svg'));
+    const restauradores = [];
+
+    for (const svg of svgs) {
+        const rect = svg.getBoundingClientRect();
+        const w = rect.width  || parseFloat(svg.getAttribute('width'))  || 16;
+        const h = rect.height || parseFloat(svg.getAttribute('height')) || 16;
+
+        const computed = window.getComputedStyle(svg);
+        const color = computed.color || '#008080';
+
+        // Clonar SVG y fijar dimensiones y colores explícitos para renderizado aislado
+        const clone = svg.cloneNode(true);
+        clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        clone.setAttribute('width', w * 4);
+        clone.setAttribute('height', h * 4);
+        clone.style.color = color;
+
+        // Reemplazar currentColor por el color RGB computado real
+        let svgXml = new XMLSerializer().serializeToString(clone);
+        svgXml = svgXml.replace(/currentColor/g, color);
+
+        const svgDataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgXml);
+
+        const pngDataUrl = await new Promise((resolve) => {
+            const tempImg = new Image();
+            tempImg.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width  = w * 4;
+                canvas.height = h * 4;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(tempImg, 0, 0, w * 4, h * 4);
+                resolve(canvas.toDataURL('image/png'));
+            };
+            tempImg.onerror = () => resolve(null);
+            tempImg.src = svgDataUrl;
+        });
+
+        if (pngDataUrl && svg.parentNode) {
+            const imgReplacement = document.createElement('img');
+            imgReplacement.src = pngDataUrl;
+            imgReplacement.className = svg.getAttribute('class') || '';
+            imgReplacement.style.width      = w + 'px';
+            imgReplacement.style.height     = h + 'px';
+            imgReplacement.style.flexShrink = '0';
+            imgReplacement.style.display    = 'inline-block';
+
+            const parent = svg.parentNode;
+            parent.replaceChild(imgReplacement, svg);
+            restauradores.push(() => {
+                if (imgReplacement.parentNode === parent) {
+                    parent.replaceChild(svg, imgReplacement);
+                }
+            });
+        }
+    }
+
+    return () => restauradores.forEach(fn => fn());
+}
+
+
+/* ============================================================
+   2. INTERSECTION OBSERVER — Animaciones al hacer scroll
    Agrega la clase "visible" cuando el elemento entra en pantalla.
    Una vez animado, deja de ser observado (la animación no se repite).
    ============================================================ */
@@ -60,14 +131,7 @@ if ('IntersectionObserver' in window) {
 
 
 /* ============================================================
-   2. DESCARGA EN PDF (Captura exacta desde x=0, y=0 sin recortes)
-   - En pantallas anchas, body.flex.justify-center desplaza #cv-content
-     en el eje X (ej. left: 320px). Cuando html2pdf crea su contenedor
-     de ancho 794px, html2canvas recortaba esos primeros 320px izquierdos.
-   - Al activar body.pdf-capturing + #cv-content.pdf-export-mode y pasar
-     x: 0, y: 0 a html2canvas, el documento se alinea en la esquina
-     superior izquierda (0, 0) y se captura el 100% del contenido en
-     cualquier tamaño de pantalla o nivel de scroll.
+   3. DESCARGA EN PDF (Captura exacta desde x=0, y=0 e íconos nítidos)
    ============================================================ */
 
 async function descargarPDF() {
@@ -100,6 +164,9 @@ async function descargarPDF() {
     if (actions) actions.style.display = 'none';
     document.body.classList.add('pdf-capturing');
     el.classList.add('pdf-export-mode');
+
+    // Convertir temporalmente los <svg> a <img> PNG 4x para evitar el recorte de viewBox en html2canvas
+    const restaurarSVGs = await convertirSVGsAPngParaPDF(el);
 
     // Esperar a que el navegador aplique el reflujo en (0, 0)
     await new Promise(r => setTimeout(r, 150));
@@ -147,7 +214,8 @@ async function descargarPDF() {
         console.error('Error en html2pdf, activando impresión nativa como respaldo:', err);
         window.print();
     } finally {
-        // Restaurar estado visual original y posición de scroll
+        // Restaurar SVGs originales, estado visual y posición de scroll
+        restaurarSVGs();
         el.classList.remove('pdf-export-mode');
         document.body.classList.remove('pdf-capturing');
         if (actions) actions.style.display = '';
