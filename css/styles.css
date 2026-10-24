@@ -20,6 +20,43 @@
     border-radius: 9999px;
 }
 
+.timeline-dot-active {
+    background-color: #008080;
+    box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.2);
+}
+
+
+/* ============================================================
+   MODO CAPTURA PDF (Garantiza layout de escritorio A4 en html2canvas)
+   ============================================================ */
+#cv-content.pdf-export-mode {
+    width: 794px !important;
+    max-width: 794px !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    margin: 0 !important;
+}
+
+#cv-content.pdf-export-mode .cv-inner-padding {
+    padding: 34px 38px !important;
+}
+
+#cv-content.pdf-export-mode .anim-block,
+#cv-content.pdf-export-mode .anim-right,
+#cv-content.pdf-export-mode .anim-left,
+#cv-content.pdf-export-mode .anim-hero,
+#cv-content.pdf-export-mode .anim-photo {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+#cv-content.pdf-export-mode .anim-line {
+    width: 52px !important;
+    transition: none !important;
+}
+
 
 /* ============================================================
    ANIMACIONES DE ENTRADA
@@ -168,12 +205,25 @@
 
 
 /* ============================================================
-   PRINT
+   PRINT (Nativo del navegador / Respaldo)
    ============================================================ */
 @media print {
-    body { background: white !important; padding: 0 !important; }
+    @page {
+        size: A4 portrait;
+        margin: 8mm;
+    }
+    body {
+        background: white !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
     #floating-actions { display: none !important; }
-    #cv-content { box-shadow: none !important; max-width: 100% !important; }
+    #cv-content {
+        box-shadow: none !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
 
     /* Forzar visibilidad de todos los elementos animados */
     .anim-block,
@@ -201,43 +251,43 @@
         justify-content: flex-end;
     }
 
-    .cv-inner-padding { padding: 28px 24px !important; }
+    #cv-content:not(.pdf-export-mode) .cv-inner-padding { padding: 28px 24px !important; }
 
     /* Header apilado */
-    .header-row  { flex-direction: column !important; }
-    .header-left { width: 100% !important; }
+    #cv-content:not(.pdf-export-mode) .header-row  { flex-direction: column !important; }
+    #cv-content:not(.pdf-export-mode) .header-left { width: 100% !important; }
 
     /* Foto + datos en la misma fila en tablet */
-    .header-left-inner {
+    #cv-content:not(.pdf-export-mode) .header-left-inner {
         display: flex !important;
         flex-direction: row !important;
         align-items: flex-start !important;
         gap: 20px !important;
         width: 100% !important;
     }
-    .header-left-inner .profile-box {
+    #cv-content:not(.pdf-export-mode) .header-left-inner .profile-box {
         flex: 0 0 130px !important;
         width: 130px !important;
         height: 165px !important;
     }
-    .header-left-inner .contact-data {
+    #cv-content:not(.pdf-export-mode) .header-left-inner .contact-data {
         flex: 1 1 auto !important;
     }
 
-    .header-right { width: 100% !important; margin-top: 12px; }
-    .name-h1 { font-size: 36px !important; }
+    #cv-content:not(.pdf-export-mode) .header-right { width: 100% !important; margin-top: 12px; }
+    #cv-content:not(.pdf-export-mode) .name-h1 { font-size: 36px !important; }
 
     /* Cuerpo apilado */
-    .body-row   { flex-direction: column !important; gap: 28px !important; }
-    .body-left  { width: 100% !important; }
-    .body-right { width: 100% !important; }
+    #cv-content:not(.pdf-export-mode) .body-row   { flex-direction: column !important; gap: 28px !important; }
+    #cv-content:not(.pdf-export-mode) .body-left  { width: 100% !important; }
+    #cv-content:not(.pdf-export-mode) .body-right { width: 100% !important; }
 
     /* En mobile, anim-right/left se comportan como anim-block */
-    .anim-right,
-    .anim-left  { transform: translateY(28px) !important; }
+    #cv-content:not(.pdf-export-mode) .anim-right,
+    #cv-content:not(.pdf-export-mode) .anim-left  { transform: translateY(28px) !important; }
 
-    .anim-right.visible,
-    .anim-left.visible  { transform: translateY(0) !important; }
+    #cv-content:not(.pdf-export-mode) .anim-right.visible,
+    #cv-content:not(.pdf-export-mode) .anim-left.visible  { transform: translateY(0) !important; }
 }
 
 
@@ -245,17 +295,17 @@
    RESPONSIVE — MOBILE  (≤ 480px)
    ============================================================ */
 @media (max-width: 480px) {
-    .cv-inner-padding { padding: 20px 18px !important; }
-    .name-h1          { font-size: 28px !important; }
-    .header-left-inner {
+    #cv-content:not(.pdf-export-mode) .cv-inner-padding { padding: 20px 18px !important; }
+    #cv-content:not(.pdf-export-mode) .name-h1          { font-size: 28px !important; }
+    #cv-content:not(.pdf-export-mode) .header-left-inner {
         flex-direction: column !important;
         align-items: center !important;
         text-align: center !important;
     }
-    .header-left-inner .contact-data ul li {
+    #cv-content:not(.pdf-export-mode) .header-left-inner .contact-data ul li {
         justify-content: center !important;
     }
-    .header-left-inner .contact-data .pt-3 {
+    #cv-content:not(.pdf-export-mode) .header-left-inner .contact-data .pt-3 {
         justify-content: center !important;
     }
 }
