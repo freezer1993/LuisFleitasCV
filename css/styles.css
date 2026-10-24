@@ -27,15 +27,26 @@
 
 
 /* ============================================================
-   MODO CAPTURA PDF (Garantiza layout de escritorio A4 en html2canvas)
+   MODO CAPTURA PDF (Garantiza layout de escritorio A4 y x=0 en html2canvas)
    ============================================================ */
+body.pdf-capturing {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #ffffff !important;
+}
+
 #cv-content.pdf-export-mode {
     width: 794px !important;
     max-width: 794px !important;
+    min-width: 794px !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     background: #ffffff !important;
     margin: 0 !important;
+    position: relative !important;
+    left: 0 !important;
+    top: 0 !important;
 }
 
 #cv-content.pdf-export-mode .cv-inner-padding {
@@ -242,7 +253,7 @@
    RESPONSIVE — TABLET  (≤ 768px)
    ============================================================ */
 @media (max-width: 768px) {
-    body { padding: 16px 12px 140px !important; }
+    body:not(.pdf-capturing) { padding: 16px 12px 140px !important; }
     #floating-actions {
         bottom: 16px;
         right: 16px;

@@ -60,17 +60,20 @@ if ('IntersectionObserver' in window) {
 
 
 /* ============================================================
-   2. DESCARGA EN PDF
-   - Inyecta imágenes Base64 para evitar errores CORS (SecurityError).
-   - Fuerza la visibilidad de todos los elementos animados y el modo
-     de exportación A4 antes de capturar.
-   - Si el navegador bloquea la librería externa o falla html2pdf,
-     ejecuta window.print() como respaldo automático.
+   2. DESCARGA EN PDF (Captura exacta desde x=0, y=0 sin recortes)
+   - En pantallas anchas, body.flex.justify-center desplaza #cv-content
+     en el eje X (ej. left: 320px). Cuando html2pdf crea su contenedor
+     de ancho 794px, html2canvas recortaba esos primeros 320px izquierdos.
+   - Al activar body.pdf-capturing + #cv-content.pdf-export-mode y pasar
+     x: 0, y: 0 a html2canvas, el documento se alinea en la esquina
+     superior izquierda (0, 0) y se captura el 100% del contenido en
+     cualquier tamaño de pantalla o nivel de scroll.
    ============================================================ */
 
 async function descargarPDF() {
-    const btn = document.getElementById('btn-download');
-    const el  = document.getElementById('cv-content');
+    const btn     = document.getElementById('btn-download');
+    const actions = document.getElementById('floating-actions');
+    const el      = document.getElementById('cv-content');
 
     // Asegurar que las imágenes tengan Data URL Base64 antes de capturar
     aplicarAssetsBase64();
@@ -88,21 +91,24 @@ async function descargarPDF() {
     document.querySelectorAll(ANIM_SELECTORS.join(',')).forEach(e => e.classList.add('visible'));
     document.querySelectorAll('.anim-line').forEach(e => e.style.width = '52px');
 
-    // Guardar posición de scroll actual y subir al inicio para evitar recortes en html2canvas
-    const prevScrollY = window.scrollY || window.pageYOffset;
+    // Guardar posición de scroll actual y subir al inicio
+    const prevScrollX = window.scrollX || window.pageXOffset || 0;
+    const prevScrollY = window.scrollY || window.pageYOffset || 0;
     window.scrollTo(0, 0);
 
-    // Activar modo de exportación A4 fijo (794px = 210mm a 96 DPI)
+    // Ocultar barra flotante y alinear el CV en (0, 0) con ancho fijo A4 (794px)
+    if (actions) actions.style.display = 'none';
+    document.body.classList.add('pdf-capturing');
     el.classList.add('pdf-export-mode');
 
-    // Esperar relayout e imágenes
-    await new Promise(r => setTimeout(r, 200));
+    // Esperar a que el navegador aplique el reflujo en (0, 0)
+    await new Promise(r => setTimeout(r, 150));
 
     const PAGE_W_MM = 210;
     const PAGE_W_PX = 794;
     const PX_PER_MM = PAGE_W_PX / PAGE_W_MM; // ≈ 3.78095
 
-    const realHeightPx = el.scrollHeight;
+    const realHeightPx = Math.ceil(el.scrollHeight);
     const realHeightMm = realHeightPx / PX_PER_MM;
     const pageHeightMm = Math.max(297, Math.ceil(realHeightMm) + 2);
 
@@ -116,11 +122,13 @@ async function descargarPDF() {
             allowTaint:      false,
             logging:         false,
             backgroundColor: '#ffffff',
+            x:               0,
+            y:               0,
+            scrollX:         0,
+            scrollY:         0,
             windowWidth:     PAGE_W_PX,
             width:           PAGE_W_PX,
-            height:          realHeightPx,
-            scrollX:         0,
-            scrollY:         0
+            height:          realHeightPx
         },
         jsPDF: {
             unit:        'mm',
@@ -139,9 +147,11 @@ async function descargarPDF() {
         console.error('Error en html2pdf, activando impresión nativa como respaldo:', err);
         window.print();
     } finally {
-        // Restaurar modo normal y posición de scroll
+        // Restaurar estado visual original y posición de scroll
         el.classList.remove('pdf-export-mode');
-        window.scrollTo(0, prevScrollY);
+        document.body.classList.remove('pdf-capturing');
+        if (actions) actions.style.display = '';
+        window.scrollTo(prevScrollX, prevScrollY);
 
         // Restaurar botón
         btn.classList.remove('loading');
