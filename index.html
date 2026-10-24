@@ -88,13 +88,13 @@
             <!-- HEADER -->
             <header class="header-row flex gap-8 mb-7 pb-6 border-b border-gray-200">
 
-                <!-- Columna izquierda: foto + contacto rápido -->
+                <!-- Columna izquierda: foto (proporción nativa 1:1 sin estiramiento) + contacto rápido -->
                 <div class="header-left" style="width:31%;">
                     <div class="header-left-inner">
 
-                        <div class="profile-box bg-teal border-b-[5px] border-navy mb-4 overflow-hidden rounded-xl shadow-md flex items-center justify-center anim-photo delay-0"
-                             style="width:130px; height:160px;">
-                            <img src="img/perfil.jpeg" data-asset="img/perfil.jpeg" alt="Foto de perfil de Luis Alberto Fleitas Rojas" style="width:100%; height:100%; object-fit:cover;">
+                        <div class="profile-box bg-white border-b-[5px] border-navy mb-4 overflow-hidden rounded-xl shadow-md flex items-center justify-center anim-photo delay-0"
+                             style="width:142px; height:142px; border: 1px solid #e2e8f0; border-bottom: 5px solid #1a2b4c;">
+                            <img src="img/perfil.jpeg" data-asset="img/perfil.jpeg" width="142" height="142" alt="Foto de perfil de Luis Alberto Fleitas Rojas" style="width:142px; height:142px; display:block;">
                         </div>
 
                         <div class="contact-data anim-left delay-1">
@@ -128,7 +128,7 @@
 
                             <div class="pt-3 mt-3 border-t border-gray-200 flex items-center gap-2.5">
                                 <a href="https://www.linkedin.com/in/luis-fleitas-63690b190" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 group" title="Escanea o haz clic para ir a LinkedIn">
-                                    <img src="img/linkedin.png" data-asset="img/linkedin.png" alt="Código QR LinkedIn" class="rounded border border-gray-200 p-0.5 bg-white group-hover:border-teal transition-colors" style="width:44px; height:44px;">
+                                    <img src="img/linkedin.png" data-asset="img/linkedin.png" width="44" height="44" alt="Código QR LinkedIn" class="rounded border border-gray-200 p-0.5 bg-white group-hover:border-teal transition-colors" style="width:44px; height:44px;">
                                     <div class="text-[10.5px] leading-tight">
                                         <span class="font-bold text-navy group-hover:text-teal transition-colors block">LinkedIn Profesional</span>
                                         <span class="text-gray-400">@luis-fleitas</span>
@@ -186,21 +186,21 @@
             <!-- /HEADER -->
 
 
-            <!-- CUERPO -->
-            <div class="body-row flex gap-8">
+            <!-- CUERPO (Columnas balanceadas al 100% de altura) -->
+            <div class="body-row flex items-stretch gap-8">
 
 
-                <!-- COLUMNA IZQUIERDA: Experiencia con Timeline + Educación -->
-                <div class="body-left" style="width:55%;">
+                <!-- COLUMNA IZQUIERDA: Experiencia con Timeline -->
+                <div class="body-left flex flex-col" style="width:54%;">
 
                     <div class="flex items-center gap-2 mb-1 anim-left delay-0">
                         <svg class="w-5 h-5 text-teal flex-shrink-0" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                         <h2 class="font-display font-bold text-navy text-[20px] uppercase tracking-tight">Experiencia Profesional</h2>
                     </div>
-                    <div class="anim-line delay-0 mb-5"></div>
+                    <div class="anim-line delay-0 mb-4"></div>
 
-                    <!-- Línea de tiempo estilo Canva -->
-                    <div class="relative pl-5 space-y-5" style="border-left: 2px solid #cbd5e1;">
+                    <!-- Línea de tiempo distribuida uniformemente para llenar la columna sin huecos inferiores -->
+                    <div class="relative pl-5 flex-1 flex flex-col justify-between py-1" style="border-left: 2px solid #cbd5e1;">
 
                         <!-- Item 1 -->
                         <div class="relative anim-left delay-1">
@@ -291,37 +291,58 @@
                     </div>
                     <!-- /Línea de tiempo -->
 
-                    <div class="flex items-center gap-2 mb-1 mt-7 anim-left delay-0">
-                        <svg class="w-5 h-5 text-teal flex-shrink-0" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                        <h2 class="font-display font-bold text-navy text-[20px] uppercase tracking-tight">Educación</h2>
-                    </div>
-                    <div class="anim-line delay-0 mb-4"></div>
-
-                    <div class="bg-lightgray p-3.5 rounded-xl border border-gray-200 anim-left delay-1">
-                        <div class="bg-navy text-white px-2.5 py-1 rounded inline-block text-[12.5px] font-bold font-display leading-none mb-1.5">
-                            Ingeniería en Informática
+                    <!-- Bloque de Especialidades y Arquitectura al pie de la columna izquierda para equilibrio visual total -->
+                    <div class="mt-5 bg-lightgray p-4 rounded-2xl border border-gray-200 anim-left delay-5">
+                        <h3 class="font-display font-bold text-navy text-sm uppercase tracking-wider mb-2.5 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-teal flex-shrink-0" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h10"/></svg>
+                            <span>Áreas de Especialización</span>
+                        </h3>
+                        <div class="grid grid-cols-2 gap-2 text-[11.5px]">
+                            <div class="bg-white px-3 py-2 rounded-lg border border-gray-200">
+                                <span class="font-bold text-navy block">Canales Digitales</span>
+                                <span class="text-gray-500 text-[10.5px]">Home Banking &amp; Transacciones</span>
+                            </div>
+                            <div class="bg-white px-3 py-2 rounded-lg border border-gray-200">
+                                <span class="font-bold text-navy block">Integración Bancaria</span>
+                                <span class="text-gray-500 text-[10.5px]">Core ITGF &amp; Xadapter BCP</span>
+                            </div>
                         </div>
-                        <div class="text-[12.5px] font-semibold text-navy">Universidad de San Lorenzo (UNISAL)</div>
-                        <div class="text-[11.5px] text-teal font-semibold mt-0.5">Finalización: 2025</div>
                     </div>
 
                 </div>
                 <!-- /COLUMNA IZQUIERDA -->
 
 
-                <!-- COLUMNA DERECHA: Skills con Barras de Progreso, Cursos, Idiomas, Seminarios -->
-                <div class="body-right" style="width:45%;">
+                <!-- COLUMNA DERECHA: Educación, Competencias, Cursos, Idiomas, Seminarios -->
+                <div class="body-right flex flex-col justify-between" style="width:46%;">
+
+                    <!-- Educación -->
+                    <div class="bg-lightgray p-4 rounded-2xl mb-4 border border-gray-200 anim-right delay-0">
+                        <h3 class="font-display font-bold text-navy text-base uppercase tracking-tight mb-2.5 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-teal flex-shrink-0" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                            <span>Educación</span>
+                        </h3>
+                        <div class="bg-white p-3 rounded-xl border border-gray-200 flex items-center justify-between gap-2">
+                            <div>
+                                <div class="font-display font-bold text-navy text-[12.5px]">Ingeniería en Informática</div>
+                                <div class="text-[11.5px] text-gray-600 font-semibold">Universidad de San Lorenzo (UNISAL)</div>
+                            </div>
+                            <span class="font-semibold text-[10.5px] px-2.5 py-1 rounded whitespace-nowrap flex-shrink-0" style="background-color: #e6f2f2; color: #008080;">
+                                Finalización: 2025
+                            </span>
+                        </div>
+                    </div>
 
                     <!-- Competencias Técnicas -->
-                    <div class="bg-lightgray p-5 rounded-2xl mb-5 border border-gray-200 anim-right delay-0">
-                        <h3 class="font-display font-bold text-navy text-lg uppercase tracking-tight mb-3.5 flex items-center gap-2">
+                    <div class="bg-lightgray p-4 rounded-2xl mb-4 border border-gray-200 anim-right delay-1">
+                        <h3 class="font-display font-bold text-navy text-base uppercase tracking-tight mb-3 flex items-center gap-2">
                             <svg class="w-4 h-4 text-teal flex-shrink-0" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                             <span>Competencias</span>
                         </h3>
 
-                        <div class="space-y-3">
+                        <div class="space-y-2.5">
                             <div>
-                                <div class="flex justify-between text-[11.5px] font-bold text-navy mb-1">
+                                <div class="flex justify-between text-[11px] font-bold text-navy mb-1">
                                     <span>Sistemas Bancarios Core (ITGF)</span>
                                     <span class="text-teal">Especialista</span>
                                 </div>
@@ -331,7 +352,7 @@
                             </div>
 
                             <div>
-                                <div class="flex justify-between text-[11.5px] font-bold text-navy mb-1">
+                                <div class="flex justify-between text-[11px] font-bold text-navy mb-1">
                                     <span>Java, Spring Boot, Node.js</span>
                                     <span class="text-gray-500">Avanzado</span>
                                 </div>
@@ -341,7 +362,7 @@
                             </div>
 
                             <div>
-                                <div class="flex justify-between text-[11.5px] font-bold text-navy mb-1">
+                                <div class="flex justify-between text-[11px] font-bold text-navy mb-1">
                                     <span>Oracle, PL/SQL, PostgreSQL</span>
                                     <span class="text-gray-500">Avanzado</span>
                                 </div>
@@ -351,7 +372,7 @@
                             </div>
 
                             <div>
-                                <div class="flex justify-between text-[11.5px] font-bold text-navy mb-1">
+                                <div class="flex justify-between text-[11px] font-bold text-navy mb-1">
                                     <span>Maven, Git, APIs REST</span>
                                     <span class="text-gray-500">Sólido</span>
                                 </div>
@@ -361,7 +382,7 @@
                             </div>
 
                             <div>
-                                <div class="flex justify-between text-[11.5px] font-bold text-navy mb-1">
+                                <div class="flex justify-between text-[11px] font-bold text-navy mb-1">
                                     <span>Angular, JSP, JavaScript</span>
                                     <span class="text-gray-500">Intermedio</span>
                                 </div>
@@ -372,7 +393,7 @@
                         </div>
 
                         <!-- Etiquetas de Stack Tecnológico -->
-                        <div class="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-gray-200">
+                        <div class="flex flex-wrap gap-1.5 mt-3.5 pt-2.5 border-t border-gray-200">
                             <span class="px-2 py-0.5 bg-white border border-gray-300 rounded text-[10px] font-semibold text-navy">Home Banking</span>
                             <span class="px-2 py-0.5 bg-white border border-gray-300 rounded text-[10px] font-semibold text-navy">Oracle Forms &amp; Reports</span>
                             <span class="px-2 py-0.5 bg-white border border-gray-300 rounded text-[10px] font-semibold text-navy">Xadapter BCP</span>
@@ -382,69 +403,69 @@
                     </div>
 
                     <!-- Cursos y Certificaciones -->
-                    <div class="bg-lightgray p-5 rounded-2xl mb-5 border border-gray-200 anim-right delay-1">
-                        <h3 class="font-display font-bold text-navy text-lg uppercase tracking-tight mb-3 flex items-center gap-2">
+                    <div class="bg-lightgray p-4 rounded-2xl mb-4 border border-gray-200 anim-right delay-2">
+                        <h3 class="font-display font-bold text-navy text-base uppercase tracking-tight mb-2.5 flex items-center gap-2">
                             <svg class="w-4 h-4 text-teal flex-shrink-0" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l-2 5l9-9l-9-9l2 5l-7 4l7 4z"/></svg>
                             <span>Cursos</span>
                         </h3>
-                        <div class="text-[12px] text-navy font-bold space-y-2.5">
-                            <a href="https://www.coursera.org/account/accomplishments/verify/1VOGWRW1T0LX?utm_source=ln&amp;utm_medium=certificate&amp;utm_content=cert_image&amp;utm_campaign=sharing_cta&amp;utm_product=course" target="_blank" rel="noopener noreferrer" class="flex justify-between items-center gap-2 bg-white px-3 py-2 rounded-lg border border-gray-200 hover:border-teal transition-colors group" title="Verificar certificado en Coursera (ID: 1VOGWRW1T0LX)">
+                        <div class="text-[11.5px] text-navy font-bold space-y-2">
+                            <a href="https://www.coursera.org/account/accomplishments/verify/1VOGWRW1T0LX?utm_source=ln&amp;utm_medium=certificate&amp;utm_content=cert_image&amp;utm_campaign=sharing_cta&amp;utm_product=course" target="_blank" rel="noopener noreferrer" class="flex justify-between items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-gray-200 hover:border-teal transition-colors group" title="Verificar certificado en Coursera (ID: 1VOGWRW1T0LX)">
                                 <span class="group-hover:text-teal transition-colors leading-snug">
                                     Foundations of Project Management
                                 </span>
-                                <span class="font-semibold text-[10.5px] px-2 py-0.5 rounded whitespace-nowrap flex items-center gap-1 flex-shrink-0" style="background-color: #e6f2f2; color: #008080;">
+                                <span class="font-semibold text-[10px] px-2 py-0.5 rounded whitespace-nowrap flex items-center gap-1 flex-shrink-0" style="background-color: #e6f2f2; color: #008080;">
                                     <span>Google · Coursera</span>
                                     <svg class="w-3 h-3 text-teal flex-shrink-0" width="12" height="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
                                 </span>
                             </a>
-                            <div class="flex justify-between items-center bg-white px-3 py-2 rounded-lg border border-gray-200">
+                            <div class="flex justify-between items-center bg-white px-3 py-1.5 rounded-lg border border-gray-200">
                                 <span>Curso Soy Bancario</span>
-                                <span class="font-semibold text-[10.5px] px-2 py-0.5 rounded" style="background-color: #e6f2f2; color: #008080;">Finanzas</span>
+                                <span class="font-semibold text-[10px] px-2 py-0.5 rounded" style="background-color: #e6f2f2; color: #008080;">Finanzas</span>
                             </div>
-                            <div class="flex justify-between items-center bg-white px-3 py-2 rounded-lg border border-gray-200">
+                            <div class="flex justify-between items-center bg-white px-3 py-1.5 rounded-lg border border-gray-200">
                                 <span>Full Stack Java + Angular</span>
-                                <span class="text-gray-500 font-normal italic text-[11px]">Udemy</span>
+                                <span class="text-gray-500 font-normal italic text-[10.5px]">Udemy</span>
                             </div>
-                            <div class="flex justify-between items-center bg-white px-3 py-2 rounded-lg border border-gray-200">
+                            <div class="flex justify-between items-center bg-white px-3 py-1.5 rounded-lg border border-gray-200">
                                 <span>Java Avanzado</span>
-                                <span class="text-gray-500 font-normal italic text-[11px]">CEPEU</span>
+                                <span class="text-gray-500 font-normal italic text-[10.5px]">CEPEU</span>
                             </div>
-                            <div class="flex justify-between items-center bg-white px-3 py-2 rounded-lg border border-gray-200">
+                            <div class="flex justify-between items-center bg-white px-3 py-1.5 rounded-lg border border-gray-200">
                                 <span>Vue + Firebase</span>
-                                <span class="text-gray-500 font-normal italic text-[11px]">Udemy</span>
+                                <span class="text-gray-500 font-normal italic text-[10.5px]">Udemy</span>
                             </div>
-                            <div class="flex justify-between items-center bg-white px-3 py-2 rounded-lg border border-gray-200">
+                            <div class="flex justify-between items-center bg-white px-3 py-1.5 rounded-lg border border-gray-200">
                                 <span>Flutter</span>
-                                <span class="text-amber-700 bg-amber-50 font-semibold text-[10.5px] px-2 py-0.5 rounded">En curso</span>
+                                <span class="text-amber-700 bg-amber-50 font-semibold text-[10px] px-2 py-0.5 rounded">En curso</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Idiomas -->
-                    <div class="bg-lightgray p-5 rounded-2xl mb-5 border border-gray-200 anim-right delay-2">
-                        <h3 class="font-display font-bold text-navy text-lg uppercase tracking-tight mb-3 flex items-center gap-2">
+                    <div class="bg-lightgray p-4 rounded-2xl mb-4 border border-gray-200 anim-right delay-3">
+                        <h3 class="font-display font-bold text-navy text-base uppercase tracking-tight mb-2.5 flex items-center gap-2">
                             <svg class="w-4 h-4 text-teal flex-shrink-0" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
                             <span>Idiomas</span>
                         </h3>
-                        <div class="grid grid-cols-2 gap-2.5 text-[12px]">
+                        <div class="grid grid-cols-2 gap-2.5 text-[11.5px]">
                             <div class="bg-white p-2.5 rounded-lg border border-gray-200">
                                 <span class="font-bold text-navy block">Español</span>
-                                <span class="text-teal font-semibold text-[11px]">Nativo</span>
+                                <span class="text-teal font-semibold text-[10.5px]">Nativo</span>
                             </div>
                             <div class="bg-white p-2.5 rounded-lg border border-gray-200">
                                 <span class="font-bold text-navy block">Inglés</span>
-                                <span class="text-gray-500 text-[10.5px] leading-tight block">CCPA (PS2 – Upper Beginner 2)</span>
+                                <span class="text-gray-500 text-[10px] leading-tight block">CCPA (PS2 – Upper Beginner 2)</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Seminarios -->
-                    <div class="bg-lightgray p-5 rounded-2xl border border-gray-200 anim-right delay-3">
-                        <h3 class="font-display font-bold text-navy text-lg uppercase tracking-tight mb-3 flex items-center gap-2">
+                    <div class="bg-lightgray p-4 rounded-2xl border border-gray-200 anim-right delay-4">
+                        <h3 class="font-display font-bold text-navy text-base uppercase tracking-tight mb-2.5 flex items-center gap-2">
                             <svg class="w-4 h-4 text-teal flex-shrink-0" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                             <span>Seminarios</span>
                         </h3>
-                        <ul class="list-disc list-outside ml-4 text-[12px] text-navy font-medium space-y-1.5">
+                        <ul class="list-disc list-outside ml-4 text-[11.5px] text-navy font-medium space-y-1">
                             <li>Convención Bancaria Paraguay 2025.</li>
                             <li>Problemáticas de desarrollo e implementación de software.</li>
                             <li>Virtualización como alternativa de desarrollo.</li>

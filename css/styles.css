@@ -278,9 +278,9 @@ body.pdf-capturing {
         width: 100% !important;
     }
     #cv-content:not(.pdf-export-mode) .header-left-inner .profile-box {
-        flex: 0 0 130px !important;
-        width: 130px !important;
-        height: 165px !important;
+        flex: 0 0 142px !important;
+        width: 142px !important;
+        height: 142px !important;
     }
     #cv-content:not(.pdf-export-mode) .header-left-inner .contact-data {
         flex: 1 1 auto !important;
